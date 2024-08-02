@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/v1.0/pico-placa")
-@CrossOrigin(value = "http://localhost:4200")
+@CrossOrigin(value = "https://placasfront-production.up.railway.app")
 public class APIController {
     @Autowired
     private PlateService plateService;
