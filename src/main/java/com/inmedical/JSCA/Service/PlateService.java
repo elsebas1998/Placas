@@ -59,6 +59,7 @@ public class PlateService implements IPlateService {
         return plateRepository.save(plate);
     }
 
+
     private boolean isValidPlateNumber(String plateNumber) {
         return plateNumber != null && plateNumber.matches("[A-Za-z]{3}[0-9]{3}");
     }
@@ -84,8 +85,10 @@ public class PlateService implements IPlateService {
     @Override
     public void deletePlate(String plateNumber) {
         Plate plate = this.plateRepository.getNumberPlate(plateNumber);
-        if(plate != null){
+        if (plate != null) {
             this.plateRepository.delete(plate);
+        } else {
+            throw new EntityNotFoundException("No se encontró una placa con el número: " + plateNumber);
         }
 
     }

@@ -19,3 +19,4 @@ public class PlateDTO {
     @NotNull
     private Set<DayPlateDTO> days;
 }
+

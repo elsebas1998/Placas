@@ -5,12 +5,14 @@ import com.inmedical.JSCA.Entites.DTO.RestriccionDTO;
 import com.inmedical.JSCA.Entites.DayRestriccion;
 import com.inmedical.JSCA.Entites.Restriccion;
 import com.inmedical.JSCA.Repository.RestriccionRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -46,9 +48,11 @@ public class RestriccionService implements  IRestriccionService{
 
     @Override
     public void deleteRestriccion(Long restriccionId) {
-        //Optional<Restriccion> restriccion = this.restriccionRepository.findById(restriccionId);
-        //  if(restriccion != null){
-        //  Optional<Restriccion> = this.restriccionRepository.delete(restriccion);
-
+        Optional<Restriccion> restriccion = this.restriccionRepository.findById(restriccionId);
+        if (restriccion.isPresent()) {
+            this.restriccionRepository.delete(restriccion.get());
+        } else {
+            throw new EntityNotFoundException("No se encontró una restricción con el ID: " + restriccionId);
+        }
     }
 }

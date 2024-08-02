@@ -27,6 +27,8 @@ public class APIController {
     @Autowired
     private RestriccionService restriccionService;
 
+
+
     @PostMapping("/createdPlate")
     public ResponseEntity<Plate> createPlate(@RequestBody PlateDTO plateDTO){
         Plate createPlate = plateService.createPlate(plateDTO);
@@ -74,6 +76,18 @@ public class APIController {
             return ResponseEntity.notFound().build();
         }
     }
+    @DeleteMapping("/plates/{plateNumber}")
+    public ResponseEntity<?> deletePlate(@PathVariable String plateNumber) {
+        try {
+            plateService.deletePlate(plateNumber);
+            return ResponseEntity.ok().body("Placa eliminada con éxito");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar la placa: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/plates/{plateNumber}/days")
     public ResponseEntity<?> addDayPlateToPlate(@PathVariable String plateNumber, @RequestBody DayPlateDTO dayPlateDTO) {
@@ -85,6 +99,19 @@ public class APIController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al agregar el día a la placa: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/restriccion/{restriccionId}")
+    public ResponseEntity<?> deleteRestriccion(@PathVariable Long restriccionId) {
+        try {
+            restriccionService.deleteRestriccion(restriccionId);
+            return ResponseEntity.ok().body("Restricción eliminada con éxito");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar la restricción: " + e.getMessage());
         }
     }
 }
